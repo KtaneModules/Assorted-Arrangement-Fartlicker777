@@ -1,13 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using KModkit;
 using Grid = GridInfo;
-using Creator = GridCreator;
 
 public class AssortedArrangement : MonoBehaviour {
 
@@ -45,8 +40,8 @@ public class AssortedArrangement : MonoBehaviour {
     DisplayedObjects[1].GetComponent<SpriteRenderer>().sprite = Objects[Grid.Grid[ChosenSquareColumn][ChosenSquareRow + 1]];
     DisplayedObjects[2].GetComponent<SpriteRenderer>().sprite = Objects[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow]];
     DisplayedObjects[3].GetComponent<SpriteRenderer>().sprite = Objects[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow + 1]];
-    Debug.LogFormat("[Assorted Arrangement #{0}] The shown items in reading order are: {1}, {2}, {3}, {4}.", ModuleId, LogNames[Grid.Grid[ChosenSquareColumn][ChosenSquareRow]], LogNames[Grid.Grid[ChosenSquareColumn][ChosenSquareRow + 1]], LogNames[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow]], LogNames[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow + 1]]);
-    Debug.LogFormat("[Assorted Arrangement #{0}] The coordinate is {1}{2}.", ModuleId, LetterCoordinates[ChosenSquareRow], (ChosenSquareColumn + 1).ToString());
+    Debug.LogFormat("[The Assorted Arrangement #{0}] The shown items in reading order are: {1}, {2}, {3}, {4}.", ModuleId, LogNames[Grid.Grid[ChosenSquareColumn][ChosenSquareRow]], LogNames[Grid.Grid[ChosenSquareColumn][ChosenSquareRow + 1]], LogNames[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow]], LogNames[Grid.Grid[ChosenSquareColumn + 1][ChosenSquareRow + 1]]);
+    Debug.LogFormat("[The Assorted Arrangement #{0}] The coordinate is {1}{2}.", ModuleId, LetterCoordinates[ChosenSquareRow], (ChosenSquareColumn + 1).ToString());
     //Debug.Log(ChosenSquare);
     //Debug.Log(Grid.Grid[ChosenSquare][0].ToString() + Grid.Grid[ChosenSquare][1].ToString() + Grid.Grid[ChosenSquare][2].ToString() + Grid.Grid[ChosenSquare][3].ToString());
   }
@@ -67,13 +62,15 @@ public class AssortedArrangement : MonoBehaviour {
             if (LetterPart == ChosenSquareRow && NumericalPart == ChosenSquareColumn) {
               if (!ModuleSolved) {
               GetComponent<KMBombModule>().HandlePass();
-              Debug.LogFormat("[Assorted Arrangement #{0}] The coordinate submitted was the same as the given one. Module disarmed.", ModuleId);
+              Debug.LogFormat("[The Assorted Arrangement #{0}] The coordinate submitted was the same as the given one. Module disarmed.", ModuleId);
               ModuleSolved = true;
               }
             }
             else if (!ModuleSolved) {
               GetComponent<KMBombModule>().HandleStrike();
-              Debug.LogFormat("[Assorted Arrangement #{0}] The coordinate you submitted was {1}{2}.", ModuleId, LetterCoordinates[LetterPart], (NumericalPart + 1).ToString());
+              Debug.LogFormat("[The Assorted Arrangement #{0}] The coordinate you submitted was {1}{2}.", ModuleId, LetterCoordinates[LetterPart], (NumericalPart + 1).ToString());
+              LetterPart &= 0;
+              NumericalPart &= 0;
             }
           break;
           case 2:
@@ -90,10 +87,6 @@ public class AssortedArrangement : MonoBehaviour {
       }
     }
   }
-
-  //void Update () {
-
-  //}
 
 #pragma warning disable 414
   private readonly string TwitchHelpMessage = @"Use !{0} TL/TR/BL/BR # to press a button that many times. The number is optional.";
